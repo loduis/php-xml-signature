@@ -1,0 +1,39 @@
+{
+    "name": "loduis/xml-signature",
+    "type": "library",
+    "require-dev": {
+        "phpunit/phpunit": "^6.5",
+        "spatie/phpunit-snapshot-assertions": "dev-master"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Loduis Madariaga",
+            "email": "loduis@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "autoload": {
+        "psr-4": {
+            "XML\\": "src/"
+        },
+        "files": [
+            "src/helpers.php"
+        ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "XML\\Tests\\": "tests/"
+        }
+    },
+    "require": {
+        "loduis/xml-element": "master",
+        "robrichards/xmlseclibs": "dev-master"
+    },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/loduis/php-xml-element"
+        }
+    ]
+}
