@@ -3,10 +3,9 @@
 namespace XML\Tests;
 
 use XML\Signature;
-use XML\Signature\Key;
 use XML\Signature\X509;
 
-class SignatureTest extends TestCase
+class XadesTest extends TestCase
 {
     public function testShouldCreateXml()
     {
@@ -42,8 +41,7 @@ class SignatureTest extends TestCase
         ]);
         $doc = new \DOMDocument();
         $doc->loadXML('<test/>');
-
-        $signature->sign($doc, true);
+        $signature->sign($doc);
         $this->assertTrue($signature->verify());
         $this->assertMatchesXmlSnapshot((string) $signature);
     }

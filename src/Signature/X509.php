@@ -52,7 +52,7 @@ class X509
             $data = '';
             $chunks = explode("\n", $this->value);
             $inData = false;
-            foreach ($chunks AS $curData) {
+            foreach ($chunks as $curData) {
                 if (! $inData) {
                     if (strncmp($curData, static::BEGIN_CERT, 27) == 0) {
                         $inData = true;
@@ -88,8 +88,8 @@ class X509
         if ($data = openssl_x509_parse($content)) {
             if (!empty($data['issuer']) && !empty($data['serialNumber'])) {
                 if (is_array($data['issuer'])) {
-                    $parts = array();
-                    foreach ($data['issuer'] AS $key => $value) {
+                    $parts = [];
+                    foreach ($data['issuer'] as $key => $value) {
                         array_unshift($parts, "$key=$value");
                     }
                     $issuerName = implode(',', $parts);

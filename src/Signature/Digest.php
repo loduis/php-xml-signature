@@ -4,7 +4,6 @@ namespace XML\Signature;
 
 use XML\Element;
 use XML\Signature;
-use UnexpectedValueException;
 
 class Digest
 {

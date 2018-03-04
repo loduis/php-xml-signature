@@ -104,7 +104,7 @@ class Key
         if (!$options) {
             throw new DomainException('Invalid Key Type');
         }
-        if ( in_array($type, [
+        if (in_array($type, [
             static::RSA_1_5,
             static::RSA_OAEP_MGF1P,
             static::RSA_SHA1,

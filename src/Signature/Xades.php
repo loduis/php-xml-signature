@@ -61,61 +61,68 @@ class Xades
     protected function createCertificate($signedSignatureProperties)
     {
         $signedSignatureProperties->SigningCertificate(
-        function ($signingCertificate) {
-            foreach ($this->certs as $value) {
-                $signingCertificate->Cert(
-                function ($cert) use ($value) {
-                    $cert->CertDigest(
-                    function ($certDigest) use ($value) {
-                        Digest::importInto(
-                            $certDigest,
-                            $this->algorithm,
-                            $value['raw']
-                        );
-                    });
-                    $cert->IssuerSerial(
-                    function ($issuerSerial) use ($value) {
-                        $issuerSerial->X509IssuerName(
-                            $value['issuer_name'],
-                            Signature::NS
-                        );
-                        $issuerSerial->X509SerialNumber(
-                            $value['serial_number'],
-                            Signature::NS
-                        );
-                    });
-                });
+            function ($signingCertificate) {
+                foreach ($this->certs as $value) {
+                    $signingCertificate->Cert(
+                        function ($cert) use ($value) {
+                            $cert->CertDigest(
+                                function ($certDigest) use ($value) {
+                                    Digest::importInto(
+                                        $certDigest,
+                                        $this->algorithm,
+                                        $value['raw']
+                                    );
+                                }
+                            );
+                            $cert->IssuerSerial(
+                                function ($issuerSerial) use ($value) {
+                                    $issuerSerial->X509IssuerName(
+                                        $value['issuer_name'],
+                                        Signature::NS
+                                    );
+                                    $issuerSerial->X509SerialNumber(
+                                        $value['serial_number'],
+                                        Signature::NS
+                                    );
+                                }
+                            );
+                        }
+                    );
+                }
             }
-        });
+        );
     }
 
     protected function createIdentifier($signedSignatureProperties)
     {
         $signedSignatureProperties->SignaturePolicyIdentifier(
-        function ($signaturePolicyIdentifier) {
-            $signaturePolicyIdentifier->SignaturePolicyId(
-            function ($signaturePolicyId) {
-                $signaturePolicyId->SigPolicyId()
-                    ->Identifier($this->identifier);
-                $signaturePolicyId->SigPolicyHash(
-                function ($sigPolicyHash) {
-                    $sigPolicyHash->DigestMethod([
-                        'Algorithm' => $this->algorithm
-                    ], Signature::NS);
-                    $sigPolicyHash->DigestValue(
-                        $this->getPolicyHash(),
-                        Signature::NS
-                    );
-                });
-            });
-        });
+            function ($signaturePolicyIdentifier) {
+                $signaturePolicyIdentifier->SignaturePolicyId(
+                    function ($signaturePolicyId) {
+                        $signaturePolicyId->SigPolicyId()
+                            ->Identifier($this->identifier);
+                        $signaturePolicyId->SigPolicyHash(
+                            function ($sigPolicyHash) {
+                                $sigPolicyHash->DigestMethod([
+                                    'Algorithm' => $this->algorithm
+                                ], Signature::NS);
+                                $sigPolicyHash->DigestValue(
+                                    $this->getPolicyHash(),
+                                    Signature::NS
+                                );
+                            }
+                        );
+                    }
+                );
+            }
+        );
     }
 
     protected function createRole($signedSignatureProperties)
     {
         $signedSignatureProperties->SignerRole()
-        ->ClaimedRoles()
-        ->ClaimedRole($this->role);
+            ->ClaimedRoles()
+            ->ClaimedRole($this->role);
     }
 
     private function getPolicyHash()

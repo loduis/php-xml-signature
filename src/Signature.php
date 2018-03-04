@@ -101,11 +101,9 @@ class Signature
 
     protected function exportTo($node, $appendTo)
     {
-        if ($appendTo === true) {
-            $this->append($node);
-        } elseif ($appendTo instanceof DOMNode) {
+        if ($appendTo instanceof DOMNode) {
             $this->append($appendTo);
-        } else if (is_callable($appendTo)) {
+        } elseif (is_callable($appendTo)) {
             $doc = $node instanceof DOMDocument ? $node : $node->ownerDocument;
             $xpath = new DOMXpath($doc);
             $node = $appendTo($xpath);
@@ -115,6 +113,8 @@ class Signature
             if ($node instanceof DOMNode) {
                 $this->append($node);
             }
+        } else {
+            $this->append($node);
         }
     }
 
@@ -123,7 +123,8 @@ class Signature
         $transforms = array_map(function ($value) {
             return is_scalar($value) ? ['Algorithm' => $value] : $value;
         }, $transforms);
-        $this->signedInfo->Reference($attributes,
+        $this->signedInfo->Reference(
+            $attributes,
             function ($reference) use ($transforms, $node) {
                 $this->addTransforms($reference, $transforms);
                 Digest::importInto(
@@ -150,13 +151,13 @@ class Signature
     protected function addKeyInfo()
     {
         $this->root->KeyInfo(function ($keyInfo) {
-            $keyInfo['Id'] = $this->keyInfoId;
             $keyInfo->X509Data(function ($X509Data) {
                 foreach ($this->certificate->all() as $cert) {
                     $X509Data->X509Certificate($cert['raw']);
                 }
             });
             if ($this->keyInfoId) {
+                $keyInfo['Id'] = $this->keyInfoId;
                 $this->addReference($keyInfo, [
                     'URI' => '#' . $this->keyInfoId
                 ]);
@@ -203,7 +204,8 @@ class Signature
                 foreach ($values as $transform) {
                     $transforms->Transform($transform);
                 }
-            });
+            }
+            );
         }
     }
 
