@@ -6,7 +6,7 @@ use XML\Element;
 use XML\Signature;
 use function XML\str_camel;
 
-class Xades
+class Xades implements \ArrayAccess
 {
     public $id;
 
@@ -47,8 +47,8 @@ class Xades
         $signedProperties = $qualifyingProperties->SignedProperties([
             'Id' => $this->id
         ]);
-        $signedProperties->SignedSignatureProperties(
-        function ($signedSignatureProperties) {
+
+        $signedProperties->SignedSignatureProperties(function ($signedSignatureProperties) {
             $signedSignatureProperties->SigningTime($this->time);
             $this->createCertificate($signedSignatureProperties);
             $this->createIdentifier($signedSignatureProperties);
@@ -120,13 +120,35 @@ class Xades
 
     protected function createRole($signedSignatureProperties)
     {
-        $signedSignatureProperties->SignerRole()
-            ->ClaimedRoles()
-            ->ClaimedRole($this->role);
+        if ($this->role) {
+            $signedSignatureProperties->SignerRole()
+                ->ClaimedRoles()
+                ->ClaimedRole($this->role);
+        }
     }
 
     private function getPolicyHash()
     {
         return $this->policyHash;
+    }
+
+    public function offsetSet($offset, $value)
+    {
+        $this->$offset = $value;
+    }
+
+    public function offsetExists($offset)
+    {
+        return isset($this->$offset);
+    }
+
+    public function offsetUnset($offset)
+    {
+        unset($this->$offset);
+    }
+
+    public function offsetGet($offset)
+    {
+        return $this->$offset ?? null;
     }
 }

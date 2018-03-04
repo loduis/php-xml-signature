@@ -7,9 +7,9 @@ use DOMXpath;
 use DOMDocument;
 use RuntimeException;
 use XML\Signature\Key;
+use XML\Signature\X509;
 use XML\Signature\Xades;
 use XML\Signature\Digest;
-use XML\Signature\X509;
 use XML\Signature\Canonicalize;
 
 class Signature
@@ -36,6 +36,8 @@ class Signature
 
     protected $keyInfoId;
 
+    protected $objectId;
+
     private $root;
 
     private $signedInfo;
@@ -58,6 +60,9 @@ class Signature
         if ($this->xades) {
             $this->xades['target'] = $this->id;
             $this->xades['algorithm'] = $this->digestAlgorithm;
+            if (is_array($this->xades)) {
+                $this->xades = new Xades($this->xades);
+            }
         }
 
         $this->root = Element::create('ds:Signature', [
@@ -169,7 +174,10 @@ class Signature
     {
         if ($this->xades) {
             $this->root->Object(function ($object) {
-                $signedProperties = (new Xades($this->xades))->appendInto($object);
+                if ($this->objectId) {
+                    $object['Id'] = $this->objectId;
+                }
+                $signedProperties = $this->xades->appendInto($object);
                 if ($this->xades['id']) {
                     $this->addReference($signedProperties, [
                         'URI' => '#' . $this->xades['id']
@@ -199,13 +207,11 @@ class Signature
     protected function addTransforms(Element $reference, array $values)
     {
         if ($values) {
-            $reference->Transforms(
-            function ($transforms) use ($values) {
+            $reference->Transforms(function ($transforms) use ($values) {
                 foreach ($values as $transform) {
                     $transforms->Transform($transform);
                 }
-            }
-            );
+            });
         }
     }
 
