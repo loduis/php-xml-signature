@@ -23,11 +23,11 @@
         }
     },
     "require": {
-        "loduis/xml-element": "master",
-        "robrichards/xmlseclibs": "dev-master"
+        "loduis/xml-element": "master"
     },
     "require-dev": {
         "phpunit/phpunit": "^6.5",
+        "robrichards/xmlseclibs": "dev-master",
         "spatie/phpunit-snapshot-assertions": "dev-master"
     }
 }
