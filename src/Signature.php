@@ -50,15 +50,15 @@ class Signature
 
     public function __construct(array $options = [])
     {
-        foreach ($options as $key => $value) {
-            $key = str_camel($key);
-            $this->$key = $value;
-        }
-
         if ($options['certificate'] ?? false && is_string($options['certificate'])) {
             $options['certificate'] = ($path = realpath($options['certificate'])) ?
                 X509::fromFile($path) :
                 X509::fromString($options['certificate']);
+        }
+
+        foreach ($options as $key => $value) {
+            $key = str_camel($key);
+            $this->$key = $value;
         }
 
         foreach (['private', 'public'] as $key) {
