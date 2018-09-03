@@ -209,4 +209,9 @@ class Key
     {
         openssl_free_key($this->value);
     }
+
+    public function details()
+    {
+        return openssl_pkey_get_details($this->value);
+    }
 }

@@ -24,6 +24,8 @@ class Xades implements \ArrayAccess
 
     public $target;
 
+    public $referenceId;
+
     public function __construct(array $options = [])
     {
         if (!($options['time'] ?? false)) {
@@ -39,7 +41,7 @@ class Xades implements \ArrayAccess
     {
         $qualifyingProperties = $object->add('xades:QualifyingProperties', [
             'xmlns:xades' => 'http://uri.etsi.org/01903/v1.3.2#',
-            'xmlns:ds' => Signature::NS,
+            // 'xmlns:ds' => Signature::NS,
             'xmlns:xades141' => 'http://uri.etsi.org/01903/v1.4.1#',
             'Target' => '#' . $this->target
         ]);
@@ -134,21 +136,27 @@ class Xades implements \ArrayAccess
 
     public function offsetSet($offset, $value)
     {
+        $offset = str_camel($offset);
         $this->$offset = $value;
     }
 
     public function offsetExists($offset)
     {
+        $offset = str_camel($offset);
+
         return isset($this->$offset);
     }
 
     public function offsetUnset($offset)
     {
+        $offset = str_camel($offset);
         unset($this->$offset);
     }
 
     public function offsetGet($offset)
     {
+        $offset = str_camel($offset);
+
         return $this->$offset ?? null;
     }
 }

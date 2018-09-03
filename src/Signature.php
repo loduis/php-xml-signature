@@ -38,6 +38,8 @@ class Signature
 
     protected $objectId;
 
+    protected $referenceId;
+
     private $root;
 
     private $signedInfo;
@@ -53,6 +55,12 @@ class Signature
             $this->$key = $value;
         }
 
+        if ($options['certificate'] ?? false && is_string($options['certificate'])) {
+            $options['certificate'] = ($path = realpath($options['certificate'])) ?
+                X509::fromFile($path) :
+                X509::fromString($options['certificate']);
+        }
+
         foreach (['private', 'public'] as $key) {
             $this->ensureKey($key);
         }
@@ -62,6 +70,9 @@ class Signature
             $this->xades['algorithm'] = $this->digestAlgorithm;
             if (is_array($this->xades)) {
                 $this->xades = new Xades($this->xades);
+            }
+            if (!($this->xades['certs'] ?? false) && $this->certificate instanceof X509) {
+                $this->xades['certs'] = $this->certificate->all();
             }
         }
 
@@ -180,6 +191,7 @@ class Signature
                 $signedProperties = $this->xades->appendInto($object);
                 if ($this->xades['id']) {
                     $this->addReference($signedProperties, [
+                        'Type' => 'http://uri.etsi.org/01903#SignedProperties',
                         'URI' => '#' . $this->xades['id']
                     ]);
                 }
@@ -200,6 +212,7 @@ class Signature
         });
 
         $this->addReference($node, [
+            'Id' => $this->referenceId,
             'URI' => ''
         ], $transforms);
     }
