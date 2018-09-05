@@ -40,6 +40,8 @@ class Signature
 
     protected $referenceId;
 
+    protected $signatureValueId;
+
     private $root;
 
     private $signedInfo;
@@ -50,7 +52,7 @@ class Signature
 
     public function __construct(array $options = [])
     {
-        if ($options['certificate'] ?? false && is_string($options['certificate'])) {
+        if (($options['certificate'] ?? false) && is_string($options['certificate'])) {
             $options['certificate'] = ($path = realpath($options['certificate'])) ?
                 X509::fromFile($path) :
                 X509::fromString($options['certificate']);
@@ -72,7 +74,9 @@ class Signature
                 $this->xades = new Xades($this->xades);
             }
             if (!($this->xades['certs'] ?? false) && $this->certificate instanceof X509) {
-                $this->xades['certs'] = $this->certificate->all();
+                $this->xades['certs'] = $this->certificate->all(
+                    Digest::translateAlgoritm($this->digestAlgorithm)
+                );
             }
         }
 
@@ -154,7 +158,11 @@ class Signature
 
     protected function addValue()
     {
-        $signatureValue = $this->root->SignatureValue();
+        $params = [];
+        if ($this->signatureValueId) {
+            $params['Id'] = $this->signatureValueId;
+        }
+        $signatureValue = $this->root->SignatureValue($params);
         if ($this->certificate) {
             $this->addKeyInfo();
             $this->addXades();
@@ -168,9 +176,7 @@ class Signature
     {
         $this->root->KeyInfo(function ($keyInfo) {
             $keyInfo->X509Data(function ($X509Data) {
-                foreach ($this->certificate->all() as $cert) {
-                    $X509Data->X509Certificate($cert['raw']);
-                }
+                $X509Data->X509Certificate($this->certificate->getValue());
             });
             if ($this->keyInfoId) {
                 $keyInfo['Id'] = $this->keyInfoId;

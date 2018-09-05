@@ -40,10 +40,10 @@ class Xades implements \ArrayAccess
     public function appendInto($object)
     {
         $qualifyingProperties = $object->add('xades:QualifyingProperties', [
+            'Target' => '#' . $this->target,
             'xmlns:xades' => 'http://uri.etsi.org/01903/v1.3.2#',
-            // 'xmlns:ds' => Signature::NS,
-            'xmlns:xades141' => 'http://uri.etsi.org/01903/v1.4.1#',
-            'Target' => '#' . $this->target
+            'xmlns:ds' => Signature::NS,
+            'xmlns:xades141' => 'http://uri.etsi.org/01903/v1.4.1#'
         ]);
 
         $signedProperties = $qualifyingProperties->SignedProperties([
@@ -69,15 +69,24 @@ class Xades implements \ArrayAccess
                         function ($cert) use ($value) {
                             $cert->CertDigest(
                                 function ($certDigest) use ($value) {
-                                    Digest::importInto(
-                                        $certDigest,
-                                        $this->algorithm,
-                                        $value['raw']
+                                    $certDigest->DigestMethod([
+                                        'Algorithm' => $this->algorithm
+                                    ], Signature::NS);
+
+                                    $certDigest->DigestValue(
+                                        $value['digest_value'],
+                                        Signature::NS
                                     );
                                 }
                             );
                             $cert->IssuerSerial(
                                 function ($issuerSerial) use ($value) {
+                                    //
+                                    $value['issuer_name'] = str_replace(
+                                        'emailAddress=info@andesscd.com.co',
+                                        '1.2.840.113549.1.9.1=#1614696e666f40616e6465737363642e636f6d2e636f',
+                                        $value['issuer_name']
+                                    );
                                     $issuerSerial->X509IssuerName(
                                         $value['issuer_name'],
                                         Signature::NS

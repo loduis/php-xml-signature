@@ -44,7 +44,7 @@ class Digest
         return base64_encode($digest);
     }
 
-    protected static function translateAlgoritm($algorithm)
+    public static function translateAlgoritm($algorithm)
     {
         $algorithm = static::ALGORITHMS[$algorithm] ?? null;
         if (!$algorithm) {

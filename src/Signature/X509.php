@@ -10,20 +10,17 @@ class X509
 
     public $publicKey;
 
+    protected $content;
+
     const BEGIN_CERT = '-----BEGIN CERTIFICATE-----';
 
     const END_CERT = '-----END CERTIFICATE-----';
 
     public function __construct($content)
     {
-        $cert = openssl_x509_read($content);
-        openssl_x509_export($cert, $this->value);
-
-        foreach (Key::load($content) as $type => $key) {
+        foreach (Key::load($this->content = $content) as $type => $key) {
             $this->{$type . 'Key'} = $key;
         }
-
-        openssl_x509_free($cert);
     }
 
     public function getKeys()
@@ -39,18 +36,39 @@ class X509
         return new static($value);
     }
 
-    public static function fromFile($filename)
+    public static function fromFile($filename, $password = '')
     {
-        return new static(file_get_contents($filename));
+        $content = file_get_contents($filename);
+
+        if (stripos($filename, '.p12') !== false && ($pem = static::p12ToPem($content, $password))) {
+            $content = $pem;
+        }
+
+        return new static($content);
     }
 
-    public function all()
+    public function getValue()
+    {
+        $cert = openssl_x509_read($this->content);
+
+        openssl_x509_export($cert, $value);
+
+        openssl_x509_free($cert);
+
+        foreach ($this->all() as $cert) {
+            if ($this->chunkSplit($cert['raw']) == $value) {
+                return $cert['raw'];
+            }
+        }
+    }
+
+    public function all($digetMethod = 'sha1')
     {
         $certs = [];
-        $isPem = strpos($this->value, static::BEGIN_CERT) !== false;
+        $isPem = strpos($this->content, static::BEGIN_CERT) !== false;
         if ($isPem) {
             $data = '';
-            $chunks = explode("\n", $this->value);
+            $chunks = explode("\n", $this->content);
             $inData = false;
             foreach ($chunks as $curData) {
                 if (! $inData) {
@@ -60,7 +78,7 @@ class X509
                 } else {
                     if (strncmp($curData, static::END_CERT, 25) == 0) {
                         $inData = false;
-                        $data = $this->parse($data);
+                        $data = $this->parse($data, $digetMethod);
                         if ($data) {
                             $certs[] = $data;
                         }
@@ -71,7 +89,7 @@ class X509
                 }
             }
         } else {
-            $cert = $this->parse($this->value);
+            $cert = $this->parse($this->content, $digetMethod);
             if ($cert) {
                 $certs[] = $cert;
             }
@@ -80,11 +98,10 @@ class X509
         return $certs;
     }
 
-    protected function parse($certicate)
+    protected function parse($certicate, $method)
     {
-        $content = static::BEGIN_CERT . "\n" .
-            chunk_split($certicate, 64, "\n") .
-            static::END_CERT . "\n";
+        $content = $this->chunkSplit($certicate);
+
         if ($data = openssl_x509_parse($content)) {
             if (!empty($data['issuer']) && !empty($data['serialNumber'])) {
                 if (is_array($data['issuer'])) {
@@ -96,12 +113,44 @@ class X509
                 } else {
                     $issuerName = $data['issuer'];
                 }
+
                 return [
                     'raw' => $certicate,
+                    'content' => $content,
+                    'digest_value' => $this->digestValue($method, $content),
                     'issuer_name' => $issuerName,
                     'serial_number' => $data['serialNumber']
                 ];
             }
+        }
+    }
+
+    protected function chunkSplit($certicate)
+    {
+        return static::BEGIN_CERT . "\n" .
+            chunk_split($certicate, 64, "\n") .
+            static::END_CERT . "\n";
+    }
+
+    protected function digestValue($method, $content)
+    {
+        $cert = openssl_x509_read($content);
+        $digetValue = openssl_x509_fingerprint($cert, $method, true);
+        openssl_x509_free($cert);
+
+        return base64_encode($digetValue);
+    }
+
+    protected static function p12ToPem($content, $password)
+    {
+        if (openssl_pkcs12_read($content, $certs, $password)) {
+            $content = [$certs['pkey'], $certs['cert']];
+            if (($certs['extracerts'] ?? false) && is_array($certs['extracerts'])) {
+                foreach ($certs['extracerts'] as $cert) {
+                    $content[] = $cert;
+                }
+            }
+            return implode(PHP_EOL, $content);
         }
     }
 }
