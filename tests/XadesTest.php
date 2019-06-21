@@ -9,7 +9,7 @@ class XadesTest extends TestCase
 {
     public function testShouldCreateXmlWithCustomCerts()
     {
-        $certificate = X509::fromFile(__DIR__ . '/utils/cert.pem');
+        $certificate = X509::fromFile(Cert::file('pem'));
         $signature = new Signature([
             'id' => 'signature',
             'key_info_id' => 'keyInfo',
@@ -51,7 +51,7 @@ class XadesTest extends TestCase
 
     public function testShouldCreateXml()
     {
-        $certificate = X509::fromFile(__DIR__ . '/utils/cert.pem');
+        $certificate = X509::fromFile(Cert::file('pem'));
         $signature = new Signature([
             'certificate' => $certificate,
             'id' => 'signature',
