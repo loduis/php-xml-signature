@@ -16,10 +16,10 @@
     </ds:Reference>
     <ds:Reference Type="http://uri.etsi.org/01903#SignedProperties" URI="#signedprops">
       <ds:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"/>
-      <ds:DigestValue>4BlPl+4pOiijDl8PBnXwFJB/7N4=</ds:DigestValue>
+      <ds:DigestValue>dyc6l05H89y2PcE7BqMeMLy5umY=</ds:DigestValue>
     </ds:Reference>
   </ds:SignedInfo>
-  <ds:SignatureValue>OHawNtcCAhwkG92D1OVnXRDVL7Nx6PxP2Uz3UgS0Qvdf14aBh0VVHY/UrlfDkYVVuZTgsgR+gpKfRkDMkY4/IFmCrZfSFVZ/tqu9ASuDMFPkO7ELWT8IwyH6EJGg0Sa5vSY9mqzK2+zw7YJ6XY9ffa/Ufp2TQeqz6qC7B5XfPeL9AYo9lVAMgEImRSHHfq9uP3kVamWEXRYvOT2esyXm6PnU5YLy+bugM7JkHRv3+3Xhoa9uowN+xETcgxAdd5NiaKvp81lARt3VNa/SPTz14/S0n23gwXlA3LYxpKdifgwQa57qEtsYUHNVnE7pFhKr650hkbPfsTUEo8n1rmd9AQ==</ds:SignatureValue>
+  <ds:SignatureValue>AjFhO3hCcqycH99ZIog1/F9SoGyy1QaeRikfjDRTwn13h8iI9l5HM26Z2L7aPc+QrkVRJOTNm/IpfMMbUKh+ln3gWL147F3YC4iEGdQR9+CVJVHHgzzq2IVzOi7m+/MZzsCcMcjparN1yGPdWgD0sLGbtHl5+reU2cPQNXWJ6KsgrwwDU/nbl6IZZvNzXvUrlUctUT6YrklNizn+OtXJqQNIxRe7XI/hp0xVroz7P3iOtNflgxMSafftJsBRMDvqWXolvtohOOXcpDuYOCEs/jCPRI+sdV6ZKtOn1DK6o5q+gKjM1lo2jp4v1Wpnw3LoQ+6KNTgn6+hRCzxYEkLbrw==</ds:SignatureValue>
   <ds:KeyInfo Id="keyInfo">
     <ds:X509Data>
       <ds:X509Certificate>MIIEEDCCAvigAwIBAgIJAKMzcZHJt4mPMA0GCSqGSIb3DQEBCwUAMIGeMQswCQYDVQQGEwJDQTEUMBIGA1UECAwLTm92YSBTY290aWExDjAMBgNVBAcMBVRydXJvMRswGQYDVQQKDBJOb21hZCB3ZWIgdmVudHVyZXMxCzAJBgNVBAsMAklUMRswGQYDVQQDDBJOb21hZCB3ZWIgdmVudHVyZXMxIjAgBgkqhkiG9w0BCQEWE2xvZHVpc0BteWFiYWt1cy5jb20wHhcNMTgwMTIwMTcxNjI1WhcNMjMwMTE5MTcxNjI1WjCBlDELMAkGA1UEBhMCQ0ExFDASBgNVBAgMC05vdmEgU2NvdGlhMQ4wDAYDVQQHDAVUcnVybzEbMBkGA1UECgwSTm9tYWQgd2ViIHZlbnR1cmVzMQswCQYDVQQLDAJJVDERMA8GA1UEAwwIbXlBYmFrdXMxIjAgBgkqhkiG9w0BCQEWE2xvZHVpc0BteWFiYWt1cy5jb20wggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQC+TnJlqN8CWFn1Pwl1sW0FigsS2qpjhkQcHWc1e/clFnsG+4URgZenyPPCKAiMN97pZkj0Q9ovxnWQkQLutvJvAhGJNz7PdwHHPnXUz/gnpsdpMjeV1TdfN2oA8Lp2bCA/1EsT3fCv/dGW1D5nvHSL00lDip2sD6orTFb01bjeSnSMFGxAlh8zvzGCiq12Is4aHsoTjiOAXQyPsmp12pqezbCvR/+QrrM1C944dPzEgpvwzcYKFRfu3Na0/v53/NGA7/P+G5sdd1D+DD60VPeK3am99e/otiCn/lZ9V3CnE9+CGtIlisHlHFtTaUXUu6YDlh1mJq/FVtzeR/AqbSA3AgMBAAGjWTBXMB8GA1UdIwQYMBaAFLVUvxk4jdDo89CtoP9BiXuyBNOnMAkGA1UdEwQCMAAwCwYDVR0PBAQDAgTwMBwGA1UdEQQVMBOCEXd3dy5sb2NhbGhvc3Qub3JnMA0GCSqGSIb3DQEBCwUAA4IBAQAHnmwJUUkNmNnXG65ZT4m+1E6BRMz6q4eV4DGaYCRbHbyTkGgu35UaM+oBAKf81//eDyAIw1AGZYzoET79QAqztDR/9Zq1MnAmhRIf6s7mR+RTWSlkteDlHjl2Ne2ZVZYZbsU/1VOxhg52rAUO0IpE9ZPu9vO7hKdtnAVZmzF8a7TRnaAuqsu68kS7MCcxtsMuZwOURWy1UNtB36dqOyNguv3umPycDoUnfxskfSBSl5vn66RQvgH/Lkn5ArgyiqsixaZ8LuegngmntT+hWv8utUN2sEBQgfYfkL50STqmuztQd5dGR/WHhIywqSHH4C4/vu/xcJFmDP29HAgGX/TY</ds:X509Certificate>
@@ -37,7 +37,7 @@
                 <ds:DigestValue>dhkt3M+WS/vJInsVoxy7XKdhe2k=</ds:DigestValue>
               </xades:CertDigest>
               <xades:IssuerSerial>
-                <ds:X509IssuerName>emailAddress=loduis@myabakus.com,CN=Nomad web ventures,OU=IT,O=Nomad web ventures,L=Truro,ST=Nova Scotia,C=CA</ds:X509IssuerName>
+                <ds:X509IssuerName>1.2.840.113549.1.9.1=#16136c6f64756973406d796162616b75732e636f6d,CN=Nomad web ventures,OU=IT,O=Nomad web ventures,L=Truro,ST=Nova Scotia,C=CA</ds:X509IssuerName>
                 <ds:X509SerialNumber>11759867922962942351</ds:X509SerialNumber>
               </xades:IssuerSerial>
             </xades:Cert>

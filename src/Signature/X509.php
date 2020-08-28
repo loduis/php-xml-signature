@@ -2,6 +2,10 @@
 
 namespace XML\Signature;
 
+const EMAIL_ADDRESS = 'emailAddress';
+const EMAIL_OID = '1.2.840.113549.1.9.1';
+const IA5STRING = 22;
+
 class X509
 {
     public $value;
@@ -107,6 +111,10 @@ class X509
                 if (is_array($data['issuer'])) {
                     $parts = [];
                     foreach ($data['issuer'] as $key => $value) {
+                        if ($key === EMAIL_ADDRESS) {
+                            $key = EMAIL_OID;
+                            $value = '#' . ia5SstringToHex($value);
+                        }
                         array_unshift($parts, "$key=$value");
                     }
                     $issuerName = implode(',', $parts);
@@ -153,4 +161,24 @@ class X509
             return implode(PHP_EOL, $content);
         }
     }
+}
+
+
+function ia5SstringToHex($value) {
+    $len = strlen($value);
+    if ($len > 127) {
+        throw new \LengthException('No se puede procesar el valor: ' . $value);
+    }
+    $bytes = chr(IA5STRING) . chr($len & 0x7F) . $value;
+    $res = '';
+    $len += 2; // sumamos los dos bytes del header
+    for ($i = 0; $i < $len; ++$i) {
+        $b = $bytes[$i];
+        $b = ord($b);
+        if($b < 16) {
+            $res += '0';
+        }
+        $res .= dechex($b);
+    }
+    return $res;
 }

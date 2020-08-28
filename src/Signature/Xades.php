@@ -81,12 +81,6 @@ class Xades implements \ArrayAccess
                             );
                             $cert->IssuerSerial(
                                 function ($issuerSerial) use ($value) {
-                                    //
-                                    $value['issuer_name'] = str_replace(
-                                        'emailAddress=info@andesscd.com.co',
-                                        '1.2.840.113549.1.9.1=#1614696e666f40616e6465737363642e636f6d2e636f',
-                                        $value['issuer_name']
-                                    );
                                     $issuerSerial->X509IssuerName(
                                         $value['issuer_name'],
                                         Signature::NS
