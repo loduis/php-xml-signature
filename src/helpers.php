@@ -13,7 +13,7 @@ namespace XML
 
 namespace XML\Singnature
 {
-    use XML\Singnature\X509;
+    use XML\Signature\X509;
 
     function x509($certificate)
     {
