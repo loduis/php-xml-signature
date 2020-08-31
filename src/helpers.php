@@ -11,7 +11,7 @@ namespace XML
     }
 }
 
-namespace XML\Singnature
+namespace XML\Signature
 {
     use XML\Signature\X509;
 
