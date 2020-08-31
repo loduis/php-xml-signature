@@ -11,6 +11,7 @@ use XML\Signature\X509;
 use XML\Signature\Xades;
 use XML\Signature\Digest;
 use XML\Signature\Canonicalize;
+use function XML\Singnature\x509;
 
 class Signature
 {
@@ -53,14 +54,7 @@ class Signature
     public function __construct(array $options = [])
     {
         if (($options['certificate'] ?? false)) {
-            if (is_string($options['certificate'])) {
-                $options['certificate'] = ($path = realpath($options['certificate'])) ?
-                    X509::fromFile($path) :
-                    X509::fromString($options['certificate']);
-            } elseif (is_iterable($options['certificate']) && ($options['certificate']['filename'] ?? false)) {
-                ['filename' => $filename, 'password' => $password] = $options['certificate'];
-                $options['certificate'] = X509::fromFile(realpath($filename), $password);
-            }
+            $options['certificate'] = x509($options['certificate']);
         }
 
         foreach ($options as $key => $value) {
