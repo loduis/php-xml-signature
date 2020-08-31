@@ -28,9 +28,6 @@ class Xades implements \ArrayAccess
 
     public function __construct(array $options = [])
     {
-        if (!($options['time'] ?? false)) {
-            $options['time'] = gmdate('Y-m-d\TH:i:s\Z');
-        }
         foreach ($options as $key => $value) {
             $key = str_camel($key);
             $this->$key = $value;
@@ -51,7 +48,7 @@ class Xades implements \ArrayAccess
         ]);
 
         $signedProperties->SignedSignatureProperties(function ($signedSignatureProperties) {
-            $signedSignatureProperties->SigningTime($this->time);
+            $signedSignatureProperties->SigningTime($this->getTime());
             $this->createCertificate($signedSignatureProperties);
             $this->createIdentifier($signedSignatureProperties);
             $this->createRole($signedSignatureProperties);
@@ -161,5 +158,14 @@ class Xades implements \ArrayAccess
         $offset = str_camel($offset);
 
         return $this->$offset ?? null;
+    }
+
+    protected function getTime()
+    {
+        if (($time = $this->time)) {
+            return is_callable($time) ? $time() : $time;
+        }
+
+        return gmdate('Y-m-d\TH:i:s\Z');
     }
 }
