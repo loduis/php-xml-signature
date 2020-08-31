@@ -207,7 +207,9 @@ class Key
 
     public function __destruct()
     {
-        openssl_free_key($this->value);
+        if (is_resource($this->value)) {
+            openssl_free_key($this->value);
+        }
     }
 
     public function details()
