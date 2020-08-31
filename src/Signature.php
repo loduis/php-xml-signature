@@ -11,7 +11,7 @@ use XML\Signature\X509;
 use XML\Signature\Xades;
 use XML\Signature\Digest;
 use XML\Signature\Canonicalize;
-use function XML\Singnature\x509;
+use function XML\Signature\x509;
 
 class Signature
 {
