@@ -162,10 +162,6 @@ class Xades implements \ArrayAccess
 
     protected function getTime()
     {
-        if (($time = $this->time)) {
-            return is_callable($time) ? $time() : $time;
-        }
-
-        return gmdate('Y-m-d\TH:i:s\Z');
+        return $this->time ?? gmdate('Y-m-d\TH:i:s\Z');
     }
 }
