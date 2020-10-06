@@ -8,7 +8,6 @@
             "email": "loduis@gmail.com"
         }
     ],
-    "minimum-stability": "dev",
     "autoload": {
         "psr-4": {
             "XML\\": "src/"
@@ -23,10 +22,15 @@
         }
     },
     "require": {
+        "php": ">=7.3",
         "loduis/xml-element": "master"
     },
     "require-dev": {
-        "loduis/xml-tests": "master",
-        "robrichards/xmlseclibs": "dev-master"
-    }
+        "loduis/xml-tests": "master"
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "prefer-stable": true,
+    "minimum-stability": "dev"
 }
