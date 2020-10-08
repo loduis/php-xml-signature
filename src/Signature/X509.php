@@ -127,7 +127,8 @@ class X509
                     'content' => $content,
                     'digest_value' => $this->digestValue($method, $content),
                     'issuer_name' => $issuerName,
-                    'serial_number' => $data['serialNumber']
+                    'serial_number' => $data['serialNumber'],
+                    'expired_at' => $data['validTo_time_t']
                 ];
             }
         }

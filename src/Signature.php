@@ -113,6 +113,21 @@ class Signature
         return $this->publicKey->verify($this->data, $this->value);
     }
 
+    public function isExpired(): bool
+    {
+        $certs = $this->xades['certs'] ?? $this->certificate->all(
+            Digest::translateAlgoritm($this->digestAlgorithm)
+        );
+        $now = time();
+        foreach ($certs as $cert) {
+            if ($now > $cert['expired_at']) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     public function __toString()
     {
         return $this->root->pretty();
