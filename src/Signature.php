@@ -118,14 +118,9 @@ class Signature
         $certs = $this->xades['certs'] ?? $this->certificate->all(
             Digest::translateAlgoritm($this->digestAlgorithm)
         );
-        $now = time();
-        foreach ($certs as $cert) {
-            if ($now > $cert['expired_at']) {
-                return true;
-            }
-        }
+        $cert = $certs[0] ?? ['expired_at' => 0];
 
-        return false;
+        return time() > $cert['expired_at'];
     }
 
     public function __toString()
