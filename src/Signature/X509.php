@@ -56,11 +56,12 @@ class X509
         $cert = openssl_x509_read($this->content);
 
         openssl_x509_export($cert, $value);
-
-        openssl_x509_free($cert);
+        if (PHP_VERSION_ID < 80000) {
+            openssl_x509_free($cert);
+        }
 
         foreach ($this->all() as $cert) {
-            if ($this->chunkSplit($cert['raw']) == $value) {
+            if (static::chunkSplit($cert['raw']) == $value) {
                 return $cert['raw'];
             }
         }
@@ -134,7 +135,7 @@ class X509
         }
     }
 
-    protected function chunkSplit($certicate)
+    public static function chunkSplit($certicate)
     {
         return static::BEGIN_CERT . "\n" .
             chunk_split($certicate, 64, "\n") .
@@ -145,7 +146,10 @@ class X509
     {
         $cert = openssl_x509_read($content);
         $digetValue = openssl_x509_fingerprint($cert, $method, true);
-        openssl_x509_free($cert);
+
+        if (PHP_VERSION_ID < 80000) {
+            openssl_x509_free($cert);
+        }
 
         return base64_encode($digetValue);
     }
