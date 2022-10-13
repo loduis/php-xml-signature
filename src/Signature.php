@@ -23,9 +23,9 @@ class Signature
 
     protected $canonicalMethod = Canonicalize::C14N;
 
-    protected $keyAlgorithm = Key::RSA_SHA1;
+    protected $keyAlgorithm = Key::RSA_SHA256;
 
-    protected $digestAlgorithm = Digest::SHA1;
+    protected $digestAlgorithm = Digest::SHA26;
 
     protected $xades;
 
