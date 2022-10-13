@@ -25,7 +25,7 @@ class Signature
 
     protected $keyAlgorithm = Key::RSA_SHA256;
 
-    protected $digestAlgorithm = Digest::SHA26;
+    protected $digestAlgorithm = Digest::SHA256;
 
     protected $xades;
 
