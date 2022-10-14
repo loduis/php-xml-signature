@@ -2,24 +2,24 @@
 <ds:Signature xmlns:ds="http://www.w3.org/2000/09/xmldsig#" Id="signature">
   <ds:SignedInfo>
     <ds:CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/>
-    <ds:SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1"/>
+    <ds:SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha256"/>
     <ds:Reference URI="">
       <ds:Transforms>
         <ds:Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/>
       </ds:Transforms>
-      <ds:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"/>
-      <ds:DigestValue>iUqbN+l20aP00zS0qltBAv2oDbc=</ds:DigestValue>
+      <ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>
+      <ds:DigestValue>Y7AjZWFIHoqKG9H7IcoDXux+bD6BAfvkGm4vwuUsGWU=</ds:DigestValue>
     </ds:Reference>
     <ds:Reference URI="#keyInfo">
-      <ds:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"/>
-      <ds:DigestValue>fjt5vNfvwNUzJkCyc1VU0zaudg8=</ds:DigestValue>
+      <ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>
+      <ds:DigestValue>JcUvFnpMvoX0HI7q9pQ+4raBrucMKR95dKc905xDEgo=</ds:DigestValue>
     </ds:Reference>
     <ds:Reference Type="http://uri.etsi.org/01903#SignedProperties" URI="#signedprops">
-      <ds:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"/>
-      <ds:DigestValue>SRfHCfbLJuCQjjWx0eJjmOYcPNU=</ds:DigestValue>
+      <ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>
+      <ds:DigestValue>p4vu46k14zcHnVNy7YSs1EJQupUWiVu0faCKdfyUXco=</ds:DigestValue>
     </ds:Reference>
   </ds:SignedInfo>
-  <ds:SignatureValue>qMnL2iYTYUJGQNA2m7kSmNzybePyNmCdCjlHkfXqQg/1iftB1lw862XoMCYeA4YjN1zMs7NCMVkZsOUClqcmSMMOp5hQ1xj3nBIVgtpEBu9Of0tU/yZMcBveV8uCyyhZraynQfHb8cN4DuSGfgd6lq904xSL/KokUJtx1cHndj4bm7+JPXS7Q+PvYceGi7pjWrgiYilLKeNYoyMzaZ91IMy4/Hh2XZjGy5Q3jg0CE2c7TFIWi1HWJLv+9GNY9RwKQoVbz5JXgPXDZ1AHEe/5YdBS/S2Hxq/iXDKj837FA0C/+ZKvaLjMIQF2s9uh1uaPiL0pytlb0fz6y1Y15nKncw==</ds:SignatureValue>
+  <ds:SignatureValue>PrAiziYNvorN/zcIorh6fkYRbS6lQ8xnod/DMEF9mxOd0pDGh1VFPuAVdVFnBdgDTzf5jZOXbtV3ypNSXScoalVGOG8t+zPas96/TbZzyks7O1zveb+35FDtYp5+Z11wtEhf694yEdUk1ocLOOUNvkYZHmsmkekcaT3K2J2MU4pO33TnER1uPfoYLCJfabCg7TEVQwBL7IIU3HxdKor/UQWdKmHnmVYft0e/1iU0X2UcCyxLvPzzZBLM/P5q+yWuVHjtPXQhHp2eTeYMunqUMDl/Hloqd3fIfOddHYrer1XSprq4eOf4vpdNIq07B3V5nWpzEv+oZ2t8zduC4z93Lg==</ds:SignatureValue>
   <ds:KeyInfo Id="keyInfo">
     <ds:X509Data>
       <ds:X509Certificate>MIIEEDCCAvigAwIBAgIJAKMzcZHJt4mPMA0GCSqGSIb3DQEBCwUAMIGeMQswCQYDVQQGEwJDQTEUMBIGA1UECAwLTm92YSBTY290aWExDjAMBgNVBAcMBVRydXJvMRswGQYDVQQKDBJOb21hZCB3ZWIgdmVudHVyZXMxCzAJBgNVBAsMAklUMRswGQYDVQQDDBJOb21hZCB3ZWIgdmVudHVyZXMxIjAgBgkqhkiG9w0BCQEWE2xvZHVpc0BteWFiYWt1cy5jb20wHhcNMTgwMTIwMTcxNjI1WhcNMjMwMTE5MTcxNjI1WjCBlDELMAkGA1UEBhMCQ0ExFDASBgNVBAgMC05vdmEgU2NvdGlhMQ4wDAYDVQQHDAVUcnVybzEbMBkGA1UECgwSTm9tYWQgd2ViIHZlbnR1cmVzMQswCQYDVQQLDAJJVDERMA8GA1UEAwwIbXlBYmFrdXMxIjAgBgkqhkiG9w0BCQEWE2xvZHVpc0BteWFiYWt1cy5jb20wggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQC+TnJlqN8CWFn1Pwl1sW0FigsS2qpjhkQcHWc1e/clFnsG+4URgZenyPPCKAiMN97pZkj0Q9ovxnWQkQLutvJvAhGJNz7PdwHHPnXUz/gnpsdpMjeV1TdfN2oA8Lp2bCA/1EsT3fCv/dGW1D5nvHSL00lDip2sD6orTFb01bjeSnSMFGxAlh8zvzGCiq12Is4aHsoTjiOAXQyPsmp12pqezbCvR/+QrrM1C944dPzEgpvwzcYKFRfu3Na0/v53/NGA7/P+G5sdd1D+DD60VPeK3am99e/otiCn/lZ9V3CnE9+CGtIlisHlHFtTaUXUu6YDlh1mJq/FVtzeR/AqbSA3AgMBAAGjWTBXMB8GA1UdIwQYMBaAFLVUvxk4jdDo89CtoP9BiXuyBNOnMAkGA1UdEwQCMAAwCwYDVR0PBAQDAgTwMBwGA1UdEQQVMBOCEXd3dy5sb2NhbGhvc3Qub3JnMA0GCSqGSIb3DQEBCwUAA4IBAQAHnmwJUUkNmNnXG65ZT4m+1E6BRMz6q4eV4DGaYCRbHbyTkGgu35UaM+oBAKf81//eDyAIw1AGZYzoET79QAqztDR/9Zq1MnAmhRIf6s7mR+RTWSlkteDlHjl2Ne2ZVZYZbsU/1VOxhg52rAUO0IpE9ZPu9vO7hKdtnAVZmzF8a7TRnaAuqsu68kS7MCcxtsMuZwOURWy1UNtB36dqOyNguv3umPycDoUnfxskfSBSl5vn66RQvgH/Lkn5ArgyiqsixaZ8LuegngmntT+hWv8utUN2sEBQgfYfkL50STqmuztQd5dGR/WHhIywqSHH4C4/vu/xcJFmDP29HAgGX/TY</ds:X509Certificate>
@@ -33,7 +33,7 @@
           <xades:SigningCertificate>
             <xades:Cert>
               <xades:CertDigest>
-                <ds:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"/>
+                <ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>
                 <ds:DigestValue>CWRZ6T8gorOatsXd1JPkT1i8OpE=</ds:DigestValue>
               </xades:CertDigest>
               <xades:IssuerSerial>
@@ -43,7 +43,7 @@
             </xades:Cert>
             <xades:Cert>
               <xades:CertDigest>
-                <ds:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"/>
+                <ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>
                 <ds:DigestValue>2MdGh3SWIpDtWUwz55wsIZssL0I=</ds:DigestValue>
               </xades:CertDigest>
               <xades:IssuerSerial>
@@ -53,7 +53,7 @@
             </xades:Cert>
             <xades:Cert>
               <xades:CertDigest>
-                <ds:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"/>
+                <ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>
                 <ds:DigestValue>7l7ZXDfZm3oHmBzjvala0kbXhOU=</ds:DigestValue>
               </xades:CertDigest>
               <xades:IssuerSerial>
@@ -68,7 +68,7 @@
                 <xades:Identifier>https://facturaelectronica.dian.gov.co/politicadefirma/v1/politicadefirmav1.pdf</xades:Identifier>
               </xades:SigPolicyId>
               <xades:SigPolicyHash>
-                <ds:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"/>
+                <ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>
                 <ds:DigestValue>61fInBICBQOCBwuTwlaOZSi9HKc=</ds:DigestValue>
               </xades:SigPolicyHash>
             </xades:SignaturePolicyId>
