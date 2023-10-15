@@ -31,8 +31,6 @@ class Signature
 
     protected $xades;
 
-    protected array $namespaces = [];
-
     protected $privateKey;
 
     protected $publicKey;
@@ -67,6 +65,9 @@ class Signature
         $modulus = $options['modulus'] ?? false;
         unset($options['modulus']);
 
+        $namespaces = $options['namespaces'] ?? [];
+        unset($options['namespaces']);
+
         foreach ($options as $key => $value) {
             $key = str_camel($key);
             $this->$key = $value;
@@ -83,7 +84,7 @@ class Signature
         if ($this->xades) {
             $this->xades['target'] = $this->id;
             $this->xades['algorithm'] = $this->digestAlgorithm;
-            if (!isset($this->xades['prefix']) && ($prefix = array_search(Xades::NS, $this->namespaces))) {
+            if (!isset($this->xades['prefix']) && ($prefix = array_search(Xades::NS, $namespaces))) {
                 $this->xades['prefix'] = $prefix;
             }
             if ($this->referenceId && isset($this->xades['format']) && !isset($this->xades['format']['reference'])) {
@@ -102,7 +103,7 @@ class Signature
         $this->root = Element::create('ds:Signature', [
             'Id' => $this->id,
             'xmlns:ds' => static::NS
-        ] + ensure_xmlns($this->namespaces));
+        ] + ensure_xmlns($namespaces));
     }
 
     public function sign(DOMNode $node, $appendTo = null)
