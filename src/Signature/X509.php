@@ -40,6 +40,29 @@ class X509
         return new static($value);
     }
 
+    public function modulus(string $type): ?array
+    {
+        $key = new Key($this->publicKey, $type, ['type' => 'public']);
+
+        if ($type === Key::RSA_SHA1) {
+            $details = $key->details();
+            $rsa = $details['rsa'] ?? null;
+
+            if (!$rsa) {
+                return null;
+            }
+
+            return [
+                'RSA' => [
+                    'value' => base64_encode($rsa['n']),
+                    'exponent' => base64_encode($rsa['e'])
+                ]
+            ];
+        }
+
+        return null;
+    }
+
     public static function fromFile($filename, $password = '')
     {
         $content = file_get_contents($filename);

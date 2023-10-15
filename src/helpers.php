@@ -15,6 +15,18 @@ namespace XML\Signature
 {
     use XML\Signature\X509;
 
+    function ensure_xmlns(array $namespaces): array
+    {
+        $res = [];
+        array_walk($namespaces, function ($value, $key)  use (&$res){
+            if (strpos($key, 'xmlns:') !== 0) {
+                $res['xmlns:' . $key] = $value;
+            }
+        });
+
+        return $res;
+    }
+
     function x509($certificate)
     {
         if ($certificate instanceof X509) {

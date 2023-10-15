@@ -2,12 +2,13 @@
 
 namespace XML\Signature;
 
-use XML\Element;
 use XML\Signature;
 use function XML\str_camel;
 
 class Xades implements \ArrayAccess
 {
+    public const NS = 'http://uri.etsi.org/01903/v1.3.2#';
+
     public $id;
 
     public $time;
@@ -22,7 +23,13 @@ class Xades implements \ArrayAccess
 
     public $certs = [];
 
+    public array $namespaces = [];
+
+    public array $format = [];
+
     public $target;
+
+    public $prefix = 'xades';
 
     public $referenceId;
 
@@ -36,12 +43,13 @@ class Xades implements \ArrayAccess
 
     public function appendInto($object)
     {
-        $qualifyingProperties = $object->add('xades:QualifyingProperties', [
+        $qualifyingProperties = $object->add($this->prefix . ':QualifyingProperties', [
             'Target' => '#' . $this->target,
-            'xmlns:xades' => 'http://uri.etsi.org/01903/v1.3.2#',
+        ] + [
+            'xmlns:' . $this->prefix => static::NS,
             'xmlns:ds' => Signature::NS,
-            'xmlns:xades141' => 'http://uri.etsi.org/01903/v1.4.1#'
-        ]);
+
+        ] + ensure_xmlns($this->namespaces));
 
         $signedProperties = $qualifyingProperties->SignedProperties([
             'Id' => $this->id
@@ -53,6 +61,12 @@ class Xades implements \ArrayAccess
             $this->createIdentifier($signedSignatureProperties);
             $this->createRole($signedSignatureProperties);
         });
+
+        if ($this->format) {
+            $signedProperties->SignedDataObjectProperties(function ($signedDataObjectProperties) {
+                $this->createFormat($signedDataObjectProperties);
+            });
+        }
 
         return $signedProperties;
     }
@@ -97,27 +111,29 @@ class Xades implements \ArrayAccess
 
     protected function createIdentifier($signedSignatureProperties)
     {
-        $signedSignatureProperties->SignaturePolicyIdentifier(
-            function ($signaturePolicyIdentifier) {
-                $signaturePolicyIdentifier->SignaturePolicyId(
-                    function ($signaturePolicyId) {
-                        $signaturePolicyId->SigPolicyId()
-                            ->Identifier($this->identifier);
-                        $signaturePolicyId->SigPolicyHash(
-                            function ($sigPolicyHash) {
-                                $sigPolicyHash->DigestMethod([
-                                    'Algorithm' => $this->algorithm
-                                ], Signature::NS);
-                                $sigPolicyHash->DigestValue(
-                                    $this->getPolicyHash(),
-                                    Signature::NS
-                                );
-                            }
-                        );
-                    }
-                );
-            }
-        );
+        if ($this->identifier) {
+            $signedSignatureProperties->SignaturePolicyIdentifier(
+                function ($signaturePolicyIdentifier) {
+                    $signaturePolicyIdentifier->SignaturePolicyId(
+                        function ($signaturePolicyId) {
+                            $signaturePolicyId->SigPolicyId()
+                                ->Identifier($this->identifier);
+                            $signaturePolicyId->SigPolicyHash(
+                                function ($sigPolicyHash) {
+                                    $sigPolicyHash->DigestMethod([
+                                        'Algorithm' => $this->algorithm
+                                    ], Signature::NS);
+                                    $sigPolicyHash->DigestValue(
+                                        $this->getPolicyHash(),
+                                        Signature::NS
+                                    );
+                                }
+                            );
+                        }
+                    );
+                }
+            );
+        }
     }
 
     protected function createRole($signedSignatureProperties)
@@ -129,25 +145,36 @@ class Xades implements \ArrayAccess
         }
     }
 
+    protected function createFormat($signedDataObjectProperties)
+    {
+        if ($this->format) {
+            $dataObjectFormat = $signedDataObjectProperties->DataObjectFormat([
+                'ObjectReference' => '#' . $this->format['reference']
+            ]);
+            $dataObjectFormat->Description($this->format['description']);
+            $dataObjectFormat->MimeType($this->format['type']);
+        }
+    }
+
     private function getPolicyHash()
     {
         return $this->policyHash;
     }
 
-    public function offsetSet($offset, $value)
+    public function offsetSet($offset, $value): void
     {
         $offset = str_camel($offset);
         $this->$offset = $value;
     }
 
-    public function offsetExists($offset)
+    public function offsetExists($offset): bool
     {
         $offset = str_camel($offset);
 
         return isset($this->$offset);
     }
 
-    public function offsetUnset($offset)
+    public function offsetUnset($offset): void
     {
         $offset = str_camel($offset);
         unset($this->$offset);

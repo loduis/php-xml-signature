@@ -1,0 +1,61 @@
+<?xml version="1.0"?>
+<ds:Signature xmlns:ds="http://www.w3.org/2000/09/xmldsig#" xmlns:etsi="http://uri.etsi.org/01903/v1.3.2#" Id="Signature620397">
+  <ds:SignedInfo>
+    <ds:CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/>
+    <ds:SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1"/>
+    <ds:Reference Id="Reference-ID-363558" URI="#comprobante">
+      <ds:Transforms>
+        <ds:Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/>
+      </ds:Transforms>
+      <ds:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"/>
+      <ds:DigestValue>iUqbN+l20aP00zS0qltBAv2oDbc=</ds:DigestValue>
+    </ds:Reference>
+    <ds:Reference URI="#Certificate1562780">
+      <ds:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"/>
+      <ds:DigestValue>2wiHpanYiFmEdyS5ql9sQwaYpi0=</ds:DigestValue>
+    </ds:Reference>
+    <ds:Reference Type="http://uri.etsi.org/01903#SignedProperties" URI="#Signature620397-SignedProperties24123">
+      <ds:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"/>
+      <ds:DigestValue>/EAL2LR2xEA4plRsCMhpttEEf2Y=</ds:DigestValue>
+    </ds:Reference>
+  </ds:SignedInfo>
+  <ds:SignatureValue>tkS6lqApOEifaYzSUVLy8H032begsv2QL/YLimajjlDVmFDq/iA/3O7cbbgs+/Yw1qxjcpDtwex8Qr84vpPiIlcSokew0S/XsEDp9AHAlnuS6C4HKB5OoeS4qQxd7tJIdCJdUfu0fF7jDhh1opKU4uJXLGJ0Eamv67kXEJuJ2t1MpIViSCD+uLRlvQ1/vG3W9nZuisyR6O7GREdpgg791pfpwy1tdiKdBXcmGNTg1IvCj3Uylz5huqdED+Y2ZRmtVGzBQ8gMvCHV0jGEsGbI5LV94XSwe9lKR70ZfjvWJltVAgPSwusjvLkncYndBnUN6rAxehGuDu85EF/58EPpPQ==</ds:SignatureValue>
+  <ds:KeyInfo Id="Certificate1562780">
+    <ds:X509Data>
+      <ds:X509Certificate>MIIEEDCCAvigAwIBAgIJAKMzcZHJt4mPMA0GCSqGSIb3DQEBCwUAMIGeMQswCQYDVQQGEwJDQTEUMBIGA1UECAwLTm92YSBTY290aWExDjAMBgNVBAcMBVRydXJvMRswGQYDVQQKDBJOb21hZCB3ZWIgdmVudHVyZXMxCzAJBgNVBAsMAklUMRswGQYDVQQDDBJOb21hZCB3ZWIgdmVudHVyZXMxIjAgBgkqhkiG9w0BCQEWE2xvZHVpc0BteWFiYWt1cy5jb20wHhcNMTgwMTIwMTcxNjI1WhcNMjMwMTE5MTcxNjI1WjCBlDELMAkGA1UEBhMCQ0ExFDASBgNVBAgMC05vdmEgU2NvdGlhMQ4wDAYDVQQHDAVUcnVybzEbMBkGA1UECgwSTm9tYWQgd2ViIHZlbnR1cmVzMQswCQYDVQQLDAJJVDERMA8GA1UEAwwIbXlBYmFrdXMxIjAgBgkqhkiG9w0BCQEWE2xvZHVpc0BteWFiYWt1cy5jb20wggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQC+TnJlqN8CWFn1Pwl1sW0FigsS2qpjhkQcHWc1e/clFnsG+4URgZenyPPCKAiMN97pZkj0Q9ovxnWQkQLutvJvAhGJNz7PdwHHPnXUz/gnpsdpMjeV1TdfN2oA8Lp2bCA/1EsT3fCv/dGW1D5nvHSL00lDip2sD6orTFb01bjeSnSMFGxAlh8zvzGCiq12Is4aHsoTjiOAXQyPsmp12pqezbCvR/+QrrM1C944dPzEgpvwzcYKFRfu3Na0/v53/NGA7/P+G5sdd1D+DD60VPeK3am99e/otiCn/lZ9V3CnE9+CGtIlisHlHFtTaUXUu6YDlh1mJq/FVtzeR/AqbSA3AgMBAAGjWTBXMB8GA1UdIwQYMBaAFLVUvxk4jdDo89CtoP9BiXuyBNOnMAkGA1UdEwQCMAAwCwYDVR0PBAQDAgTwMBwGA1UdEQQVMBOCEXd3dy5sb2NhbGhvc3Qub3JnMA0GCSqGSIb3DQEBCwUAA4IBAQAHnmwJUUkNmNnXG65ZT4m+1E6BRMz6q4eV4DGaYCRbHbyTkGgu35UaM+oBAKf81//eDyAIw1AGZYzoET79QAqztDR/9Zq1MnAmhRIf6s7mR+RTWSlkteDlHjl2Ne2ZVZYZbsU/1VOxhg52rAUO0IpE9ZPu9vO7hKdtnAVZmzF8a7TRnaAuqsu68kS7MCcxtsMuZwOURWy1UNtB36dqOyNguv3umPycDoUnfxskfSBSl5vn66RQvgH/Lkn5ArgyiqsixaZ8LuegngmntT+hWv8utUN2sEBQgfYfkL50STqmuztQd5dGR/WHhIywqSHH4C4/vu/xcJFmDP29HAgGX/TY</ds:X509Certificate>
+    </ds:X509Data>
+    <ds:KeyValue>
+      <ds:RSAKeyValue>
+        <ds:Modulus>vk5yZajfAlhZ9T8JdbFtBYoLEtqqY4ZEHB1nNXv3JRZ7BvuFEYGXp8jzwigIjDfe6WZI9EPaL8Z1kJEC7rbybwIRiTc+z3cBxz511M/4J6bHaTI3ldU3XzdqAPC6dmwgP9RLE93wr/3RltQ+Z7x0i9NJQ4qdrA+qK0xW9NW43kp0jBRsQJYfM78xgoqtdiLOGh7KE44jgF0Mj7Jqddqans2wr0f/kK6zNQveOHT8xIKb8M3GChUX7tzWtP7+d/zRgO/z/hubHXdQ/gw+tFT3it2pvfXv6LYgp/5WfVdwpxPfghrSJYrB5RxbU2lF1LumA5YdZiavxVbc3kfwKm0gNw==</ds:Modulus>
+        <ds:Modulus>AQAB</ds:Modulus>
+      </ds:RSAKeyValue>
+    </ds:KeyValue>
+  </ds:KeyInfo>
+  <ds:Object Id="Signature620397-Object231987">
+    <etsi:QualifyingProperties Target="#Signature620397">
+      <etsi:SignedProperties Id="Signature620397-SignedProperties24123">
+        <etsi:SignedSignatureProperties>
+          <etsi:SigningTime>2012-03-05T16:57:32-05:00</etsi:SigningTime>
+          <etsi:SigningCertificate>
+            <etsi:Cert>
+              <etsi:CertDigest>
+                <ds:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"/>
+                <ds:DigestValue>xUQewsj7MrjSfyMnhWz5DhQnWJM=</ds:DigestValue>
+              </etsi:CertDigest>
+              <etsi:IssuerSerial>
+                <ds:X509IssuerName>CN=AC BANCO CENTRAL DEL ECUADOR,L=QUITO,OU=ENTIDAD DE CERTIFICACION DE INFORMACION-ECIBCE,O=BANCO CENTRAL DEL ECUADOR,C=EC</ds:X509IssuerName>
+                <ds:X509SerialNumber>1312833444</ds:X509SerialNumber>
+              </etsi:IssuerSerial>
+            </etsi:Cert>
+          </etsi:SigningCertificate>
+        </etsi:SignedSignatureProperties>
+        <etsi:SignedDataObjectProperties>
+          <etsi:DataObjectFormat ObjectReference="#Reference-ID-363558">
+            <etsi:Description>contenido comprobante</etsi:Description>
+            <etsi:MimeType>text/xml</etsi:MimeType>
+          </etsi:DataObjectFormat>
+        </etsi:SignedDataObjectProperties>
+      </etsi:SignedProperties>
+    </etsi:QualifyingProperties>
+  </ds:Object>
+</ds:Signature>

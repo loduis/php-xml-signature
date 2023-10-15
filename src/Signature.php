@@ -11,6 +11,8 @@ use XML\Signature\X509;
 use XML\Signature\Xades;
 use XML\Signature\Digest;
 use XML\Signature\Canonicalize;
+
+use function XML\Signature\ensure_xmlns;
 use function XML\Signature\x509;
 
 class Signature
@@ -29,6 +31,8 @@ class Signature
 
     protected $xades;
 
+    protected array $namespaces = [];
+
     protected $privateKey;
 
     protected $publicKey;
@@ -43,6 +47,8 @@ class Signature
 
     protected $signatureValueId;
 
+    protected $referenceUri = '';
+
     private $root;
 
     private $signedInfo;
@@ -51,11 +57,15 @@ class Signature
 
     private $data;
 
+    private ?array $modulus = null;
+
     public function __construct(array $options = [])
     {
         if (($options['certificate'] ?? false)) {
             $options['certificate'] = x509($options['certificate']);
         }
+        $modulus = $options['modulus'] ?? false;
+        unset($options['modulus']);
 
         foreach ($options as $key => $value) {
             $key = str_camel($key);
@@ -66,9 +76,19 @@ class Signature
             $this->ensureKey($key);
         }
 
+        if ($modulus) {
+            $this->modulus = $this->certificate->modulus($this->keyAlgorithm);
+        }
+
         if ($this->xades) {
             $this->xades['target'] = $this->id;
             $this->xades['algorithm'] = $this->digestAlgorithm;
+            if (!isset($this->xades['prefix']) && ($prefix = array_search(Xades::NS, $this->namespaces))) {
+                $this->xades['prefix'] = $prefix;
+            }
+            if ($this->referenceId && isset($this->xades['format']) && !isset($this->xades['format']['reference'])) {
+                $this->xades['format']['reference'] = $this->referenceId;
+            }
             if (is_array($this->xades)) {
                 $this->xades = new Xades($this->xades);
             }
@@ -82,7 +102,7 @@ class Signature
         $this->root = Element::create('ds:Signature', [
             'Id' => $this->id,
             'xmlns:ds' => static::NS
-        ]);
+        ] + ensure_xmlns($this->namespaces));
     }
 
     public function sign(DOMNode $node, $appendTo = null)
@@ -187,6 +207,17 @@ class Signature
             $keyInfo->X509Data(function ($X509Data) {
                 $X509Data->X509Certificate($this->certificate->getValue());
             });
+            if ($this->modulus) {
+                $keyInfo->KeyValue(function ($keyValue) {
+                    foreach ($this->modulus as $key => $value) {
+                        $keyValue->{$key . 'KeyValue'}(function ($rSAKeyValue) use ($value) {
+                            $rSAKeyValue->Modulus($value['value']);
+                            $rSAKeyValue->Modulus($value['exponent']);
+                        });
+
+                    }
+                });
+            }
             if ($this->keyInfoId) {
                 $keyInfo['Id'] = $this->keyInfoId;
                 $this->addReference($keyInfo, [
@@ -228,7 +259,7 @@ class Signature
 
         $this->addReference($node, [
             'Id' => $this->referenceId,
-            'URI' => ''
+            'URI' => $this->referenceUri
         ], $transforms);
     }
 
