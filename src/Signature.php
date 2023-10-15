@@ -87,11 +87,11 @@ class Signature
             if (!isset($this->xades['prefix']) && ($prefix = array_search(Xades::NS, $namespaces))) {
                 $this->xades['prefix'] = $prefix;
             }
-            if ($this->referenceId && isset($this->xades['format']) && !isset($this->xades['format']['reference'])) {
-                $this->xades['format']['reference'] = $this->referenceId;
-            }
             if (is_array($this->xades)) {
                 $this->xades = new Xades($this->xades);
+            }
+            if ($this->referenceId && !empty($this->xades->format) && !isset($this->xades->format['reference'])) {
+                $this->xades->format['reference'] = $this->referenceId;
             }
             if (!($this->xades['certs'] ?? false) && $this->certificate instanceof X509) {
                 $this->xades['certs'] = $this->certificate->all(
