@@ -106,6 +106,13 @@ class Signature
         ] + ensure_xmlns($namespaces));
     }
 
+    public function time(string $time)
+    {
+        if ($this->xades) {
+            $this->xades->time = $time;
+        }
+    }
+
     public function sign(DOMNode $node, $appendTo = null)
     {
         $this->addSignedInfo($node, [

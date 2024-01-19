@@ -1,0 +1,65 @@
+<?xml version="1.0"?>
+<ds:Signature xmlns:ds="http://www.w3.org/2000/09/xmldsig#" Id="signature">
+  <ds:SignedInfo>
+    <ds:CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/>
+    <ds:SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha256"/>
+    <ds:Reference URI="">
+      <ds:Transforms>
+        <ds:Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/>
+      </ds:Transforms>
+      <ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>
+      <ds:DigestValue>Y7AjZWFIHoqKG9H7IcoDXux+bD6BAfvkGm4vwuUsGWU=</ds:DigestValue>
+    </ds:Reference>
+    <ds:Reference URI="#keyInfo">
+      <ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>
+      <ds:DigestValue>JcUvFnpMvoX0HI7q9pQ+4raBrucMKR95dKc905xDEgo=</ds:DigestValue>
+    </ds:Reference>
+    <ds:Reference Type="http://uri.etsi.org/01903#SignedProperties" URI="#signedprops">
+      <ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>
+      <ds:DigestValue>auiyOWmYMd/YlchALI5kuhSAAkxUrV79xk/N1wd41vY=</ds:DigestValue>
+    </ds:Reference>
+  </ds:SignedInfo>
+  <ds:SignatureValue>b/LULiFhZIToEmj+7cfAflz8kWYa+98DF14JU/x+txtxdEzCfxUDhbzkF5sPo6sf2dSeYZitqmNy/KBVkxmvCSUvP1T6g9Z1JshmVw64Tt7DMJ5Y69+MzxCq36pZIQFKykTNlWljOErmpIg8UKcezh4JPQNys3F3GH29HDw7riHCqylmM7a88FyXg1MP81BSi3We+HUP10sbXWMV6fJiddUqw4OSUbm1f4lpG/L1kZ2dY89963WPfHSoTXUa6+0R9gd2HuhY33k39YYTgwLu8jJ38ITU9QGYvV87VkPzrNxJOVE/qdWE+l+mOwLLtpMJD35AIxCLLK3j5NyXXXM42Q==</ds:SignatureValue>
+  <ds:KeyInfo Id="keyInfo">
+    <ds:X509Data>
+      <ds:X509Certificate>MIIEEDCCAvigAwIBAgIJAKMzcZHJt4mPMA0GCSqGSIb3DQEBCwUAMIGeMQswCQYDVQQGEwJDQTEUMBIGA1UECAwLTm92YSBTY290aWExDjAMBgNVBAcMBVRydXJvMRswGQYDVQQKDBJOb21hZCB3ZWIgdmVudHVyZXMxCzAJBgNVBAsMAklUMRswGQYDVQQDDBJOb21hZCB3ZWIgdmVudHVyZXMxIjAgBgkqhkiG9w0BCQEWE2xvZHVpc0BteWFiYWt1cy5jb20wHhcNMTgwMTIwMTcxNjI1WhcNMjMwMTE5MTcxNjI1WjCBlDELMAkGA1UEBhMCQ0ExFDASBgNVBAgMC05vdmEgU2NvdGlhMQ4wDAYDVQQHDAVUcnVybzEbMBkGA1UECgwSTm9tYWQgd2ViIHZlbnR1cmVzMQswCQYDVQQLDAJJVDERMA8GA1UEAwwIbXlBYmFrdXMxIjAgBgkqhkiG9w0BCQEWE2xvZHVpc0BteWFiYWt1cy5jb20wggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQC+TnJlqN8CWFn1Pwl1sW0FigsS2qpjhkQcHWc1e/clFnsG+4URgZenyPPCKAiMN97pZkj0Q9ovxnWQkQLutvJvAhGJNz7PdwHHPnXUz/gnpsdpMjeV1TdfN2oA8Lp2bCA/1EsT3fCv/dGW1D5nvHSL00lDip2sD6orTFb01bjeSnSMFGxAlh8zvzGCiq12Is4aHsoTjiOAXQyPsmp12pqezbCvR/+QrrM1C944dPzEgpvwzcYKFRfu3Na0/v53/NGA7/P+G5sdd1D+DD60VPeK3am99e/otiCn/lZ9V3CnE9+CGtIlisHlHFtTaUXUu6YDlh1mJq/FVtzeR/AqbSA3AgMBAAGjWTBXMB8GA1UdIwQYMBaAFLVUvxk4jdDo89CtoP9BiXuyBNOnMAkGA1UdEwQCMAAwCwYDVR0PBAQDAgTwMBwGA1UdEQQVMBOCEXd3dy5sb2NhbGhvc3Qub3JnMA0GCSqGSIb3DQEBCwUAA4IBAQAHnmwJUUkNmNnXG65ZT4m+1E6BRMz6q4eV4DGaYCRbHbyTkGgu35UaM+oBAKf81//eDyAIw1AGZYzoET79QAqztDR/9Zq1MnAmhRIf6s7mR+RTWSlkteDlHjl2Ne2ZVZYZbsU/1VOxhg52rAUO0IpE9ZPu9vO7hKdtnAVZmzF8a7TRnaAuqsu68kS7MCcxtsMuZwOURWy1UNtB36dqOyNguv3umPycDoUnfxskfSBSl5vn66RQvgH/Lkn5ArgyiqsixaZ8LuegngmntT+hWv8utUN2sEBQgfYfkL50STqmuztQd5dGR/WHhIywqSHH4C4/vu/xcJFmDP29HAgGX/TY</ds:X509Certificate>
+    </ds:X509Data>
+  </ds:KeyInfo>
+  <ds:Object>
+    <xades:QualifyingProperties xmlns:xades="http://uri.etsi.org/01903/v1.3.2#" xmlns:xades141="http://uri.etsi.org/01903/v1.4.1#" Target="#signature">
+      <xades:SignedProperties Id="signedprops">
+        <xades:SignedSignatureProperties>
+          <xades:SigningTime>2016-07-12T12:17:38.639-05:00</xades:SigningTime>
+          <xades:SigningCertificate>
+            <xades:Cert>
+              <xades:CertDigest>
+                <ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>
+                <ds:DigestValue>g6yC6Wc2i7yiZ7djJD717WvuZOPVxOJ6r79fOWrOpuw=</ds:DigestValue>
+              </xades:CertDigest>
+              <xades:IssuerSerial>
+                <ds:X509IssuerName>1.2.840.113549.1.9.1=#16136c6f64756973406d796162616b75732e636f6d,CN=Nomad web ventures,OU=IT,O=Nomad web ventures,L=Truro,ST=Nova Scotia,C=CA</ds:X509IssuerName>
+                <ds:X509SerialNumber>11759867922962942351</ds:X509SerialNumber>
+              </xades:IssuerSerial>
+            </xades:Cert>
+          </xades:SigningCertificate>
+          <xades:SignaturePolicyIdentifier>
+            <xades:SignaturePolicyId>
+              <xades:SigPolicyId>
+                <xades:Identifier>https://facturaelectronica.dian.gov.co/politicadefirma/v1/politicadefirmav1.pdf</xades:Identifier>
+              </xades:SigPolicyId>
+              <xades:SigPolicyHash>
+                <ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>
+                <ds:DigestValue>61fInBICBQOCBwuTwlaOZSi9HKc=</ds:DigestValue>
+              </xades:SigPolicyHash>
+            </xades:SignaturePolicyId>
+          </xades:SignaturePolicyIdentifier>
+          <xades:SignerRole>
+            <xades:ClaimedRoles>
+              <xades:ClaimedRole>supplier</xades:ClaimedRole>
+            </xades:ClaimedRoles>
+          </xades:SignerRole>
+        </xades:SignedSignatureProperties>
+      </xades:SignedProperties>
+    </xades:QualifyingProperties>
+  </ds:Object>
+</ds:Signature>

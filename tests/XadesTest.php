@@ -120,4 +120,33 @@ class XadesTest extends TestCase
         $this->assertTrue($signature->verify());
         $this->assertMatchesXmlSnapshot((string) $signature);
     }
+
+    public function testShouldCreateXmlWithOtherTime()
+    {
+        $certificate = X509::fromFile(Cert::file('pem'));
+        $signature = new Signature([
+            'certificate' => $certificate,
+            'id' => 'signature',
+            'key_info_id' => 'keyInfo',
+            'xades' => [
+                'id' => 'signedprops',
+                'time' => '2016-07-12T11:17:38.639-05:00',
+                'role' => 'supplier',
+                'identifier' => 'https://facturaelectronica.dian.gov.co/politicadefirma/v1/politicadefirmav1.pdf',
+                'policy_hash' => '61fInBICBQOCBwuTwlaOZSi9HKc=',
+                'namespaces' => [
+                    'xades141' => 'http://uri.etsi.org/01903/v1.4.1#'
+                ]
+            ]
+        ]);
+        $time = '2016-07-12T12:17:38.639-05:00';
+        $signature->time($time);
+        $doc = new \DOMDocument();
+        $doc->loadXML('<test/>');
+        $signature->sign($doc);
+        $this->assertTrue($signature->verify());
+        $xml = (string) $signature;
+        $this->assertMatchesXmlSnapshot($xml);
+        $this->assertStringContainsString($time, $xml);
+    }
 }
