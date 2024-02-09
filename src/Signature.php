@@ -220,7 +220,7 @@ class Signature
                     foreach ($this->modulus as $key => $value) {
                         $keyValue->{$key . 'KeyValue'}(function ($rSAKeyValue) use ($value) {
                             $rSAKeyValue->Modulus($value['value']);
-                            $rSAKeyValue->Modulus($value['exponent']);
+                            $rSAKeyValue->Exponent($value['exponent']);
                         });
 
                     }
