@@ -2,6 +2,7 @@
 
 namespace XML\Signature;
 
+use Exception;
 use XML\Element;
 use XML\Signature;
 
@@ -39,12 +40,12 @@ class Digest
 
     public static function calculate($algorithm, $data)
     {
-        $digest = hash(static::translateAlgoritm($algorithm), $data, true);
+        $digest = hash(static::translateAlgorithm($algorithm), $data, true);
 
         return base64_encode($digest);
     }
 
-    public static function translateAlgoritm($algorithm)
+    public static function translateAlgorithm($algorithm)
     {
         $algorithm = static::ALGORITHMS[$algorithm] ?? null;
         if (!$algorithm) {

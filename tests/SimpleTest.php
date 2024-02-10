@@ -20,4 +20,18 @@ class SimpleTest extends TestCase
         $this->assertTrue($signature->verify());
         $this->assertMatchesXmlSnapshot((string) $signature);
     }
+
+    public function testShouldCreateXmlWithChucks()
+    {
+        $certificate = X509::fromFile(Cert::file('pem'));
+        $signature = new Signature([
+            'certificate' => $certificate,
+            'chunks' => 76
+        ]);
+        $doc = new \DOMDocument();
+        $doc->loadXML('<test/>');
+        $signature->sign($doc);
+        $this->assertTrue($signature->verify());
+        $this->assertMatchesXmlSnapshot((string) $signature);
+    }
 }

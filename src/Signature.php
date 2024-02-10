@@ -47,6 +47,8 @@ class Signature
 
     protected $referenceUri = '';
 
+    protected int $chunks = 0;
+
     private $root;
 
     private $signedInfo;
@@ -95,7 +97,7 @@ class Signature
             }
             if (!($this->xades['certs'] ?? false) && $this->certificate instanceof X509) {
                 $this->xades['certs'] = $this->certificate->all(
-                    Digest::translateAlgoritm($this->digestAlgorithm)
+                    Digest::translateAlgorithm($this->digestAlgorithm)
                 );
             }
         }
@@ -144,7 +146,7 @@ class Signature
     public function isExpired(): bool
     {
         $certs = $this->xades['certs'] ?? $this->certificate->all(
-            Digest::translateAlgoritm($this->digestAlgorithm)
+            Digest::translateAlgorithm($this->digestAlgorithm)
         );
         $cert = $certs[0] ?? ['expired_at' => 0];
 
@@ -213,7 +215,11 @@ class Signature
     {
         $this->root->KeyInfo(function ($keyInfo) {
             $keyInfo->X509Data(function ($X509Data) {
-                $X509Data->X509Certificate($this->certificate->getValue());
+                $certificate = $this->certificate->getValue();
+                if ($this->chunks) {
+                    $certificate = chunk_split($certificate, $this->chunks, "\n");
+                }
+                $X509Data->X509Certificate($certificate);
             });
             if ($this->modulus) {
                 $keyInfo->KeyValue(function ($keyValue) {
@@ -245,7 +251,7 @@ class Signature
                 $signedProperties = $this->xades->appendInto($object);
                 if ($this->xades['id']) {
                     $this->addReference($signedProperties, [
-                        'Type' => 'http://uri.etsi.org/01903#SignedProperties',
+                        'Type' => Xades::NS_PROPS,
                         'URI' => '#' . $this->xades['id']
                     ]);
                 }

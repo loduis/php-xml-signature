@@ -9,6 +9,8 @@ class Xades implements \ArrayAccess
 {
     public const NS = 'http://uri.etsi.org/01903/v1.3.2#';
 
+    public const NS_PROPS = 'http://uri.etsi.org/01903#SignedProperties';
+
     public $id;
 
     public $time;
