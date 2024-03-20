@@ -67,11 +67,10 @@ abstract class Validator
 
     protected static function verifyReferences(DOMElement $root, DOMElement $sigInfo): bool
     {
-        $_uri = '#' . ($root->getAttribute('id') ?: $root->getAttribute('Id'));
+        $id = $root->getAttribute('id') ?: $root->getAttribute('Id');
+        $_uri = $id ? "#$id" : $id;
         $info = $root->C14N();
-        $info = preg_replace([
-            '|<ds:Signature[^>]+>.+</ds:Signature>|ms'
-        ], '', $info);
+        $info = preg_replace(static::ignoreInfo(), '', $info);
         $references = $sigInfo->getElementsByTagNameNS(Signature::NS, 'Reference');
         foreach ($references as $reference) {
             $uri = $reference->getAttribute('URI');
@@ -154,5 +153,12 @@ abstract class Validator
             '-----END CERTIFICATE-----' . PHP_EOL;
 
         return openssl_get_publickey($publicKey);
+    }
+
+    protected static function ignoreInfo(): array
+    {
+        return [
+            '|<Signature[^>]+>.+</Signature>|ms'
+        ];
     }
 }
