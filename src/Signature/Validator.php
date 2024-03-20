@@ -13,10 +13,10 @@ abstract class Validator
 {
     abstract public static function verify(string $xml): bool;
 
-    protected static function toDocument(string $xml): DOMDocument
+    protected static function toDocument(string $xml, bool $preserve = true): DOMDocument
     {
         $doc = new DOMDocument();
-        $doc->preserveWhiteSpace = true;
+        $doc->preserveWhiteSpace = $preserve;
         $doc->formatOutput = false;
         $doc->loadXML($xml);
 
