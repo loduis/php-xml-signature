@@ -158,7 +158,7 @@ abstract class Validator
     protected static function ignoreInfo(): array
     {
         return [
-            '|<Signature[^>]+>.+</Signature>|ms'
+            '|<ds:Signature[^>]+>.+</ds:Signature>|ms'
         ];
     }
 }
