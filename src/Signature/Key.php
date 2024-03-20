@@ -207,9 +207,7 @@ class Key
 
     public function __destruct()
     {
-        if (is_resource($this->value) && PHP_VERSION_ID < 80000) {
-            openssl_free_key($this->value);
-        }
+        unset($this->value);
     }
 
     public function details()
