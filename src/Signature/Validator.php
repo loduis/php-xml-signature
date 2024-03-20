@@ -53,11 +53,13 @@ abstract class Validator
             return null;
         }
 
+        $opt = Key::OPTIONS[$method];
+
         $res = openssl_verify(
             $info->C14N(),
             base64_decode($signature->nodeValue),
             static::getPublicKey($publicKey),
-            $method
+            $opt['digest'] ?? OPENSSL_ALGO_SHA1
         );
 
         return $res && static::verifyReferences($node, $info) ? $info : null;
