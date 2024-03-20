@@ -188,7 +188,6 @@ class X509
     }
 }
 
-
 function ia5SstringToHex($value) {
     $len = strlen($value);
     if ($len > 127) {

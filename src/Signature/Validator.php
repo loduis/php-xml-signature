@@ -23,21 +23,34 @@ abstract class Validator
         return $doc;
     }
 
-    protected static function verifySignature($node)
+    protected static function verifyKeyINfo($node, $info): bool
+    {
+        return static::verifyReferences(
+            static::findElement($node, 'KeyInfo', Signature::NS), $info
+        );
+    }
+    protected static function verifySignedProperties($node, $info): bool
+    {
+        return static::verifyReferences(
+            static::findElement($node, 'SignedProperties', Xades::NS), $info
+        );
+    }
+
+    protected static function verifySignature($node): ?DOMElement
     {
         if (!($publicKey = static::findElement($node, 'X509Certificate'))) {
-            return false;
+            return null;
         }
         if (!($signature = static::findElement($node, 'SignatureValue'))) {
-            return false;
+            return null;
         }
 
         if (!($method = static::getMethod($node, 'SignatureMethod'))) {
-            return false;
+            return null;
         }
 
         if (!($info = static::findElement($node, 'SignedInfo'))) {
-            return false;
+            return null;
         }
 
         $res = openssl_verify(
@@ -47,10 +60,10 @@ abstract class Validator
             $method
         );
 
-        return $res ? $info : false;
+        return $res ? $info : null;
     }
 
-    protected static function verifyReferences(DOMNode $root, DOMElement $sigInfo): bool
+    protected static function verifyReferences(DOMElement $root, DOMElement $sigInfo): bool
     {
         $_uri = '#' . ($root->getAttribute('id') ?: $root->getAttribute('Id'));
         $info = $root->C14N();
@@ -99,7 +112,7 @@ abstract class Validator
      *
      * @return DOMElement|null
      */
-    private static function findElement($doc, string $tag, ?string $ns = null): ?DOMElement
+    protected static function findElement($doc, string $tag, ?string $ns = null): ?DOMElement
     {
         $node = $ns ?
             $doc->getElementsByTagNameNS($ns, $tag) :
