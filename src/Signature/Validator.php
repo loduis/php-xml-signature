@@ -23,7 +23,7 @@ abstract class Validator
         return $doc;
     }
 
-    protected static function verifyKeyINfo($node, $info): bool
+    protected static function verifyKeyInfo($node, $info): bool
     {
         return static::verifyReferences(
             static::findElement($node, 'KeyInfo', Signature::NS), $info
@@ -60,7 +60,7 @@ abstract class Validator
             $method
         );
 
-        return $res ? $info : null;
+        return $res && static::verifyReferences($node, $info) ? $info : null;
     }
 
     protected static function verifyReferences(DOMElement $root, DOMElement $sigInfo): bool
