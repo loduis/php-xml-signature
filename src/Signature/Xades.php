@@ -33,6 +33,8 @@ class Xades implements \ArrayAccess
 
     public $prefix = 'xades';
 
+    public $slice;
+
     public $referenceId;
 
     public function __construct(array $options = [])
