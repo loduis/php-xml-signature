@@ -99,7 +99,7 @@ class Signature
                 $this->xades['certs'] = $this->certificate->all(
                     Digest::translateAlgorithm($this->digestAlgorithm)
                 );
-                if (($slice = $this->xades['slice'] ?? false)) {
+                if (($slice = $this->xades['slice'] ?? false) && count($this->xades['certs']) > $slice) {
                     $this->xades['certs'] = array_slice($this->xades['certs'], 0, $slice);
                 }
             }
