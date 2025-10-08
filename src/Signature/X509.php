@@ -74,19 +74,128 @@ class X509
         return new static($content);
     }
 
+    /**
+     * Ensures a P12 file uses modern encryption algorithms compatible with OpenSSL 3.x
+     * Returns path to modern P12 file (either original if already modern, or converted)
+     *
+     * @param string $p12FilePath Path to P12 file
+     * @param string $password Password for the P12 file
+     * @param string|null $outputPath Optional output path for converted file
+     * @return string|null Path to modern P12 file, or null on failure
+     */
+    public static function ensureModernP12($p12FilePath, $password, $outputPath = null)
+    {
+        $content = file_get_contents($p12FilePath);
+
+        if ($content === false) {
+            return null;
+        }
+
+        // P12 is legacy, needs conversion
+        $pem = static::p12ToPem($content, $password);
+
+        if ($pem !== null) {
+            return $p12FilePath;
+        }
+
+        $pem = static::convertP12ToPemViaCommand($content, $password);
+
+        if ($pem === null) {
+            return null;
+        }
+        // Convert PEM back to modern P12
+        $outputPath = $outputPath ?? tempnam(sys_get_temp_dir(), 'modern_p12_') . '.p12';
+
+        if (static::pemToModernP12($pem, $password, $outputPath)) {
+            return $outputPath;
+        }
+
+        return null;
+    }
+
+    /**
+     * Converts PEM content to modern P12 format
+     *
+     * @param string $pemContent PEM content
+     * @param string $password Password for the new P12 file
+     * @param string $outputPath Output path for P12 file
+     * @return bool Success status
+     */
+    private static function pemToModernP12($pemContent, $password, $outputPath)
+    {
+        // Parse PEM content
+        preg_match_all('/-----BEGIN CERTIFICATE-----.*?-----END CERTIFICATE-----/s', $pemContent, $certMatches);
+        preg_match('/-----BEGIN (?:RSA )?PRIVATE KEY-----.*?-----END (?:RSA )?PRIVATE KEY-----/s', $pemContent, $keyMatch);
+
+        if (empty($certMatches[0])) {
+            return false;
+        }
+
+        return static::createModernP12ViaCommand($pemContent, $password, $outputPath);
+    }
+
+    /**
+     * Creates a modern P12 file using openssl command with AES encryption
+     *
+     * @param string $pemContent PEM content
+     * @param string $password Password for P12 file
+     * @param string $outputPath Output path
+     * @return bool Success status
+     */
+    private static function createModernP12ViaCommand($pemContent, $password, $outputPath)
+    {
+        $tempPem = tempnam(sys_get_temp_dir(), 'pem_');
+
+        try {
+            if (file_put_contents($tempPem, $pemContent) === false) {
+                return false;
+            }
+
+            // Create P12 with modern algorithms (AES-256-CBC instead of RC2-40-CBC)
+            $command = sprintf(
+                'openssl pkcs12 -export -in %s -out %s -passout pass:%s -certpbe AES-256-CBC -keypbe AES-256-CBC -macalg SHA256 2>/dev/null',
+                escapeshellarg($tempPem),
+                escapeshellarg($outputPath),
+                escapeshellarg($password)
+            );
+
+            shell_exec($command);
+
+            return file_exists($outputPath) && filesize($outputPath) > 0;
+        } finally {
+            if (file_exists($tempPem)) {
+                @unlink($tempPem);
+            }
+        }
+    }
+
     public function getValue()
     {
-        $cert = openssl_x509_read($this->content);
+        $allCerts = $this->all();
+
+        if (empty($allCerts)) {
+            return null;
+        }
+
+        // Extract first certificate from content for comparison
+        $firstCertContent = $allCerts[0]['content'];
+        $cert = openssl_x509_read($firstCertContent);
+
+        if ($cert === false) {
+            return null;
+        }
 
         openssl_x509_export($cert, $value);
 
         unset($cert);
 
-        foreach ($this->all() as $cert) {
+        foreach ($allCerts as $cert) {
             if (static::chunkSplit($cert['raw']) == $value) {
                 return $cert['raw'];
             }
         }
+
+        return null;
     }
 
     public function all($digetMethod = 'sha1')
@@ -174,16 +283,79 @@ class X509
         return base64_encode($digestValue);
     }
 
-    protected static function p12ToPem($content, $password)
+    protected static function p12ToPem($content, $password): ?string
     {
+        // Try native PHP function first
         if (openssl_pkcs12_read($content, $certs, $password)) {
-            $content = [$certs['pkey'], $certs['cert']];
-            if (($certs['extracerts'] ?? false) && is_array($certs['extracerts'])) {
-                foreach ($certs['extracerts'] as $cert) {
-                    $content[] = $cert;
-                }
+            return static::buildPemFromCerts($certs);
+        }
+
+        return null;
+    }
+
+    protected static function buildPemFromCerts($certs)
+    {
+        $content = [$certs['pkey'], $certs['cert']];
+        if (($certs['extracerts'] ?? false) && is_array($certs['extracerts'])) {
+            foreach ($certs['extracerts'] as $cert) {
+                $content[] = $cert;
             }
-            return implode(PHP_EOL, $content);
+        }
+        return implode(PHP_EOL, $content);
+    }
+
+    protected static function isOpenSSLCommandAvailable()
+    {
+        static $available = null;
+
+        if ($available === null) {
+            // Check if shell_exec is disabled
+            $disabled = explode(',', ini_get('disable_functions'));
+            $disabled = array_map('trim', $disabled);
+
+            if (in_array('shell_exec', $disabled) || !function_exists('shell_exec')) {
+                $available = false;
+            } else {
+                // Check if openssl command exists
+                $result = shell_exec('which openssl 2>/dev/null');
+                $available = !empty($result);
+            }
+        }
+
+        return $available;
+    }
+
+    private static function convertP12ToPemViaCommand($content, $password)
+    {
+        $tempP12 = tempnam(sys_get_temp_dir(), 'p12_');
+
+        try {
+            if (file_put_contents($tempP12, $content) === false) {
+                return null;
+            }
+
+            // Try with -legacy flag for OpenSSL 3.x, fallback to standard for OpenSSL 1.x
+            // Use -nodes to avoid encrypting the private key in output
+            $command = sprintf(
+                'openssl pkcs12 -in %s -passin pass:%s -nodes -legacy 2>/dev/null || openssl pkcs12 -in %s -passin pass:%s -nodes 2>/dev/null',
+                escapeshellarg($tempP12),
+                escapeshellarg($password),
+                escapeshellarg($tempP12),
+                escapeshellarg($password)
+            );
+
+            $pem = shell_exec($command);
+
+            // Verify PEM content is valid
+            if ($pem && strpos($pem, '-----BEGIN') !== false) {
+                return $pem;
+            }
+
+            return null;
+        } finally {
+            if (file_exists($tempP12)) {
+                @unlink($tempP12);
+            }
         }
     }
 }

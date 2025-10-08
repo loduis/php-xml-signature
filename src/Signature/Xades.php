@@ -184,7 +184,7 @@ class Xades implements \ArrayAccess
         unset($this->$offset);
     }
 
-    public function offsetGet($offset)
+    public function offsetGet($offset): mixed
     {
         $offset = str_camel($offset);
 
